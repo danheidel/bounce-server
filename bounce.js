@@ -22,8 +22,8 @@ if(!bounceVals.bouncePort){
 	process.exit();
 }
 
-console.log('starting as user: ' + process.env.USER);
-
+console.log('starting as user: ' + user);
+deEscalate(user);
 fs.readFile(configPath, 'utf8', function(err, data){
 	if(err){
 		console.error('Error: ' + err);
@@ -108,14 +108,14 @@ function checkJSON(iJSON){
 function deEscalate(){
 	//after reading config file (root level ownership) de-escalate user permissions
 	try {
-		process.setuid(user);
 		process.setgid(user);
+		process.setuid(user);
 	} catch (e) {
 		console.error('problem setting user/group, exiting');
 		console.dir(e);
 		process.exit();
 	}
-	console.log('user changed to: ' + process.env.USER);
+	console.log('user changed to: ' + user);
 }
 
 function startBounceServer(){
