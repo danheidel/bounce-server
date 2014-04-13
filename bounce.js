@@ -110,10 +110,11 @@ function deEscalate(){
 	try {
 		process.setuid(user);
 	} catch (e) {
-		console.error('problem setting user');
+		console.error('problem setting user, exiting');
 		console.dir(e);
 		process.exit();
 	}
+	console.log('user changed to: ' + process.env.USER);
 }
 
 function startBounceServer(){
@@ -139,7 +140,7 @@ function startBounceServer(){
 	//engage server
 	console.log(bounceVals.bouncePort);
 	bounceServer.listen(bounceVals.bouncePort);
-	console.log('bounce listening at: ' + port);
+	console.log('bounce listening at: ' + bounceVals.bouncePort);
 }
 
 function isNumber(iNum){
