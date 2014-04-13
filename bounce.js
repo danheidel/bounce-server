@@ -53,7 +53,7 @@ function checkJSON(iJSON){
 	if(typeof(_404Config) === 'undefined'){
 		validParse = false;
 		console.error('404 server must be defined in config file');
-	}else if(!_404Config.env.NODESERVERPORT){
+	}else if(!_404Config.env || !_404Config.env.NODESERVERPORT){
 		validParse = false;
 		console.error('404 server must have a valid port number');
 	}else{
@@ -70,7 +70,7 @@ function checkJSON(iJSON){
 				validParse = false;
 				console.error('the server in ' + index + ' place has no name');
 			}
-			if(!isValidPort(elem.env.NODESERVERPORT)){
+			if(!isValidPort(elem.env || elem.env.NODESERVERPORT)){
 				validParse = false;
 				console.error(elem.name + ' port is invalid');
 			}else{
