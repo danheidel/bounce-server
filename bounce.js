@@ -22,6 +22,8 @@ if(!bounceVals.bouncePort){
 	process.exit();
 }
 
+console.log('starting as user: ' + process.env.USER);
+
 fs.readFile(configPath, 'utf8', function(err, data){
 	if(err){
 		console.error('Error: ' + err);
