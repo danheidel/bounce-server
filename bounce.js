@@ -70,7 +70,7 @@ function checkJSON(iJSON){
 				validParse = false;
 				console.error('the server in ' + index + ' place has no name');
 			}
-			if(!isValidPort(elem.env || elem.env.NODESERVERPORT)){
+			if(!elem.env || !isValidPort(elem.env.NODESERVERPORT)){
 				validParse = false;
 				console.error(elem.name + ' port is invalid');
 			}else{
