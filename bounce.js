@@ -10,6 +10,18 @@ var bounceVals = {
 };
 var bounceServer;
 
+var user, port;
+user = process.env.NODEUSERID || process.argv[2];
+if(!user){
+	console.error('no user specified, exiting');
+	process.exit();
+}
+port = process.env.NODESERVERPORT || process.argv[3];
+if(!port){
+	console.error('no port specified, exiting');
+	process.exit();
+}
+
 fs.readFile(configPath, 'utf8', function(err, data){
 	if(err){
 		console.error('Error: ' + err);
@@ -34,14 +46,6 @@ function checkJSON(iJSON){
 	if(typeof(bounceConfig) === 'undefined'){
 		validParse = false;
 		console.error('bounce server must be declared in config file');		
-	}else if(bounceConfig.args.length != 1){
-		validParse = false;
-		console.error('bounce server must only have one port number');
-	}else if(!isValidPort(bounceConfig.args[0])){
-		validParse = false;
-		console.error('bounce server port is invalid');
-	}else{
-		bounceVals.bouncePort = bounceConfig.args[0];
 	}
 
 	//test 404 server config
@@ -49,14 +53,11 @@ function checkJSON(iJSON){
 	if(typeof(_404Config) === 'undefined'){
 		validParse = false;
 		console.error('404 server must be defined in config file');
-	}else if(_404Config.args.length != 1){
+	}else if(!_404Config.env.NODESERVERPORT){
 		validParse = false;
-		console.error('404 server must only have one port number');
-	}else if(!isValidPort(_404Config.args[0])){
-		validParse = false;
-		console.error('404 server port is invalid');
+		console.error('404 server must have a valid port number');
 	}else{
-		bounceVals._404Port = _404Config.args[0];
+		bounceVals._404Port = _404Config.env.NODESERVERPORT;
 	}
 
 	//test destination servers
@@ -69,17 +70,14 @@ function checkJSON(iJSON){
 				validParse = false;
 				console.error('the server in ' + index + ' place has no name');
 			}
-			if(elem.args.length != 1){
-				validParse = false;
-				console.error(elem.name + ' can only have one defined port');
-			}else if(!isValidPort(elem.args[0])){
+			if(!isValidPort(elem.env.NODESERVERPORT)){
 				validParse = false;
 				console.error(elem.name + ' port is invalid');
 			}else{
 				//valid destination server
 				_.each(elem.urls, function(url, index){
 					bounceVals.servers.push({
-						port: elem.args[0],
+						port: elem.env.NODESERVERPORT,
 						url: elem.urls[index]
 					});
 				}, elem);
@@ -107,15 +105,10 @@ function checkJSON(iJSON){
 
 function deEscalate(){
 	//after reading config file (root level ownership) de-escalate user permissions
-	var user = process.env.USERID || process.argv[2];
-	if(!user){
-		console.log('no user specified, exiting');
-		process.exit();
-	}
-	try{
+	try {
 		process.setuid(user);
 	} catch (e) {
-		console.log('problem setting user');
+		console.error('problem setting user');
 		console.dir(e);
 	}
 }
@@ -142,8 +135,8 @@ function startBounceServer(){
 	
 	//engage server
 	console.log(bounceVals.bouncePort);
-	bounceServer.listen(bounceVals.bouncePort);
-	console.log('bounce listening at: ' + bounceVals.bouncePort);
+	bounceServer.listen(port);
+	console.log('bounce listening at: ' + port);
 }
 
 function isNumber(iNum){
