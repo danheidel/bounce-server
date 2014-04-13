@@ -16,8 +16,8 @@ if(!user){
 	console.error('no user specified, exiting');
 	process.exit();
 }
-port = parseInt(process.env.NODESERVERPORT) || parseInt(process.argv[3]);
-if(!port){
+bounceVals.bouncePort = parseInt(process.env.NODESERVERPORT) || parseInt(process.argv[3]);
+if(!bounceVals.bouncePort){
 	console.error('no port specified, exiting');
 	process.exit();
 }
@@ -136,7 +136,7 @@ function startBounceServer(){
 	
 	//engage server
 	console.log(bounceVals.bouncePort);
-	bounceServer.listen(port);
+	bounceServer.listen(bounceVals.bouncePort);
 	console.log('bounce listening at: ' + port);
 }
 
