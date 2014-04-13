@@ -110,6 +110,7 @@ function deEscalate(){
 	} catch (e) {
 		console.error('problem setting user');
 		console.dir(e);
+		process.exit();
 	}
 }
 
