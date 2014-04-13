@@ -11,12 +11,12 @@ var bounceVals = {
 var bounceServer;
 
 var user, port;
-user = process.env.NODEUSERID || process.argv[2];
+user = parseInt(process.env.NODEUSERID) || parseInt(process.argv[2]);
 if(!user){
 	console.error('no user specified, exiting');
 	process.exit();
 }
-port = process.env.NODESERVERPORT || process.argv[3];
+port = parseInt(process.env.NODESERVERPORT) || parseInt(process.argv[3]);
 if(!port){
 	console.error('no port specified, exiting');
 	process.exit();
@@ -57,7 +57,7 @@ function checkJSON(iJSON){
 		validParse = false;
 		console.error('404 server must have a valid port number');
 	}else{
-		bounceVals._404Port = _404Config.env.NODESERVERPORT;
+		bounceVals._404Port = parseInt(_404Config.env.NODESERVERPORT);
 	}
 
 	//test destination servers
@@ -77,7 +77,7 @@ function checkJSON(iJSON){
 				//valid destination server
 				_.each(elem.urls, function(url, index){
 					bounceVals.servers.push({
-						port: elem.env.NODESERVERPORT,
+						port: parseInt(elem.env.NODESERVERPORT),
 						url: elem.urls[index]
 					});
 				}, elem);
