@@ -109,8 +109,9 @@ function deEscalate(){
 	//after reading config file (root level ownership) de-escalate user permissions
 	try {
 		process.setuid(user);
+		process.setgid(user);
 	} catch (e) {
-		console.error('problem setting user, exiting');
+		console.error('problem setting user/group, exiting');
 		console.dir(e);
 		process.exit();
 	}
