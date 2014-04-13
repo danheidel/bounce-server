@@ -23,7 +23,9 @@ if(!bounceVals.bouncePort){
 }
 
 console.log('starting as user: ' + user);
+
 deEscalate(user);
+
 fs.readFile(configPath, 'utf8', function(err, data){
 	if(err){
 		console.error('Error: ' + err);
@@ -39,6 +41,19 @@ fs.readFile(configPath, 'utf8', function(err, data){
 	//console.dir(data);
 	checkJSON(data);
 });
+
+function deEscalate(){
+	//after reading config file (root level ownership) de-escalate user permissions
+	try {
+		process.setgid(user);
+		process.setuid(user);
+	} catch (e) {
+		console.error('problem setting user/group, exiting');
+		console.dir(e);
+		process.exit();
+	}
+	console.log('user changed to: ' + user);
+}
 
 function checkJSON(iJSON){
 	var validParse = true;
@@ -103,19 +118,6 @@ function checkJSON(iJSON){
 		console.error('problem with config file, exiting');
 		process.exit();
 	}
-}
-
-function deEscalate(){
-	//after reading config file (root level ownership) de-escalate user permissions
-	try {
-		process.setgid(user);
-		process.setuid(user);
-	} catch (e) {
-		console.error('problem setting user/group, exiting');
-		console.dir(e);
-		process.exit();
-	}
-	console.log('user changed to: ' + user);
 }
 
 function startBounceServer(){
