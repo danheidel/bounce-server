@@ -97,10 +97,26 @@ function checkJSON(iJSON){
 	
 	if(validParse == true){
 		//console.log('config parsed successfully!');
+		deEscalate();
 		startBounceServer();
 	}else{
 		console.error('problem with config file, exiting');
 		process.exit();
+	}
+}
+
+function deEscalate(){
+	//after reading config file (root level ownership) de-escalate user permissions
+	var user = process.env.USERID || process.argv[2];
+	if(!user){
+		console.log('no user specified, exiting');
+		process.exit();
+	}
+	try{
+		process.setuid(user);
+	} catch (e) {
+		console.log('problem setting user');
+		console.dir(e);
 	}
 }
 
