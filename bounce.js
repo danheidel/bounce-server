@@ -112,7 +112,6 @@ function checkJSON(iJSON){
 	
 	if(validParse == true){
 		//console.log('config parsed successfully!');
-		deEscalate();
 		startBounceServer();
 	}else{
 		console.error('problem with config file, exiting');
