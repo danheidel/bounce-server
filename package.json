@@ -1,0 +1,24 @@
+{
+  "name": "bounce-server",
+  "version": "0.0.0",
+  "description": "",
+  "main": "bounce.js",
+  "dependencies": {
+    "bouncy": "~3.2.1",
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:danheidel/bounce-server.git"
+  },
+  "author": "Dan Heidel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danheidel/bounce-server/issues"
+  },
+  "homepage": "https://github.com/danheidel/bounce-server"
+}
