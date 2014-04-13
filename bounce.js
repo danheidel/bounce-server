@@ -22,7 +22,7 @@ if(!bounceVals.bouncePort){
 	process.exit();
 }
 
-console.log('starting as user: ' + user);
+console.log('starting as user: ' + process.env.USER);
 
 deEscalate(user);
 
